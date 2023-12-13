@@ -37,8 +37,9 @@ model Order {
   productId    Int
   observation  String?
   additionalId Int?
-  isClosed     Boolean
   customer     String
+  isClosed     Boolean
+  isReady      Boolean
   additional   Additional? @relation(fields: [additionalId], references: [id])
   products     Product[]   @relation("OrderProducts")
 }
