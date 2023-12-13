@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -19,7 +16,7 @@ model Product {
   category    Categories
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
-  Order       Order[]
+  orders      Order[]    @relation("OrderProducts")
 }
 
 model Additional {
@@ -30,7 +27,7 @@ model Additional {
   id          Int      @id @default(autoincrement())
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  Order       Order[]
+  orders      Order[]
 }
 
 model Order {
@@ -41,9 +38,9 @@ model Order {
   observation  String?
   additionalId Int?
   isClosed     Boolean
-  costumer     String
-  Additional   Additional? @relation(fields: [additionalId], references: [id])
-  Product      Product     @relation(fields: [productId], references: [id])
+  customer     String
+  additional   Additional? @relation(fields: [additionalId], references: [id])
+  products     Product[]   @relation("OrderProducts")
 }
 
 enum Categories {
@@ -51,10 +48,4 @@ enum Categories {
   SIDE
   DRINK
   DESSERT
-}
-
-enum PaymentModes {
-  CREDIT
-  DEBIT
-  CASH
 }
