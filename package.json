@@ -1,10 +1,29 @@
 {
   "name": "fast-restaurant-api",
+
   "version": "1.0.0",
   "description": "A Rest API made with NodeJs and Typescript.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prebuild": "rm -rf dist",
+    "build": "tsc -p tsconfig.build.json && tsc-alias",
+    "start": "npm run migration:run && node dist/index.js",
+    "migration:run": "prisma migrate deploy",
+    "migration:generate": "npm run dev:load-envs prisma migrate dev",
+    "lint": "eslint '**/*.ts'",
+    "lint:staged": "lint-staged",
+    "test": "cross-env NODE_ENV=test jest --passWithNoTests --runInBand",
+    "test:coverage": "npm run test:load-envs -- jest -- --coverage --runInBand",
+    "test:migration:run": "npm run test:load-envs prisma migrate deploy",
+    "test:migration:generate": "npm run test:load-envs prisma migrate dev",
+    "test:watch": "jest --watch --passWithNoTests --runInBand",
+    "test:load-envs": "dotenv -e .env.test",
+    "test:seed": "npm run test:load-envs prisma db seed",
+    "dev:load-envs": "dotenv -e .env.development",
+    "dev:migration:run": "npm run dev:load-envs prisma migrate deploy",
+    "dev:migration:generate": "npm run dev:load-envs prisma migrate dev",
+    "dev:seed": "npm run dev:load-envs prisma db seed",
+    "dev": "cross-env NODE_ENV=development nodemon --watch 'src/' --exec 'ts-node -r tsconfig-paths/register ./src/index.ts' -e ts"
   },
   "repository": {
     "type": "git",
