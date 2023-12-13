@@ -1,6 +1,5 @@
 {
   "name": "fast-restaurant-api",
-
   "version": "1.0.0",
   "description": "A Rest API made with NodeJs and Typescript.",
   "main": "index.js",
@@ -37,6 +36,7 @@
   },
   "homepage": "https://github.com/pablodru/fast-restaurant-api#readme",
   "dependencies": {
+    "@prisma/client": "^5.7.0",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "dotenv-cli": "^7.3.0",
