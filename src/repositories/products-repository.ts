@@ -1,9 +1,9 @@
-import { prisma } from "@/config";
+import { prisma } from '@/config';
 
-async function getProducts(){
-    return await prisma.product.findMany();
+async function getProducts() {
+  return await prisma.product.findMany();
 }
 
-const productsRepository = {getProducts};
+const productsRepository = { getProducts };
 
 export default productsRepository;

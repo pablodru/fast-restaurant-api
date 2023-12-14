@@ -1,14 +1,17 @@
-import { notFoundError } from "@/errors/notFound-error";
-import productsRepository from "@/repositories/products-repository";
+import { notFoundError } from '@/errors/notFound-error';
+import additionalRepository from '@/repositories/additionals-repository';
+import productsRepository from '@/repositories/products-repository';
 
 async function getProducts() {
-    const products = await productsRepository.getProducts();
+  const products = await productsRepository.getProducts();
+  const additionals = await additionalRepository.getAdditionals();
 
-    if(!products) throw notFoundError("Products");
+  if (!products) throw notFoundError('Products');
 
-    return products;
+  const productsWithAdditionals = { products, additionals };
+  return productsWithAdditionals;
 }
 
-const productsService = {getProducts};
+const productsService = { getProducts };
 
 export default productsService;
