@@ -3,7 +3,12 @@ import additionalRepository from '@/repositories/additionals-repository';
 import ordersRepository from '@/repositories/orders-repository';
 import productsRepository from '@/repositories/products-repository';
 
-async function postOrder(name: string, productIds: number[], additionalsIds?: number[]) {
+export type TypeInfos = {
+  name: string,
+  observation?:string
+}
+
+async function postOrder(infos: TypeInfos, productIds: number[], additionalsIds?: number[]) {
   const existingProducts = await productsRepository.getProductsByIds(productIds);
   if (!existingProducts || existingProducts.length === 0) throw notFoundError('Products');
   if (additionalsIds) {
@@ -11,13 +16,14 @@ async function postOrder(name: string, productIds: number[], additionalsIds?: nu
     if (!existingAdditionals || existingAdditionals.length === 0) throw notFoundError('Additionals');
   }
 
-  const response = await ordersRepository.createOrder(productIds, additionalsIds, name);
+  const response = await ordersRepository.createOrder(productIds, additionalsIds, infos);
   return response;
 }
 
 async function getOrderNotClosed(name: string) {
   const response = await ordersRepository.getOrderNotClosed(name);
   if (!response) throw notFoundError('Name');
+  
   return response;
 }
 

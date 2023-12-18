@@ -1,11 +1,13 @@
 import { prisma } from '@/config';
+import { TypeInfos } from '@/services/orders-service';
 
-async function createOrder(productIds: number[], additionalsIds: number[] = [], name: string) {
+async function createOrder(productIds: number[], additionalsIds: number[] = [], infos: TypeInfos) {
   return await prisma.order.create({
     data: {
-      customer: name,
+      customer: infos.name,
       isClosed: false,
       isReady: false,
+      observation: infos.observation,
       products: {
         connect: productIds.map((productId) => ({ id: productId })),
       },

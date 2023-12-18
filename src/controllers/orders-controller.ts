@@ -4,9 +4,9 @@ import { preOrderSchema } from '@/schemas/orders-schema';
 import ordersService from '@/services/orders-service';
 
 async function postOrder(req: Request, res: Response) {
-  const { additionalsIds, productIds, name } = req.body as preOrderSchema;
+  const { additionalsIds, productIds, name, observation } = req.body as preOrderSchema;
 
-  const response = await ordersService.postOrder(name, productIds, additionalsIds);
+  const response = await ordersService.postOrder({name, observation}, productIds, additionalsIds);
 
   return res.status(httpStatus.CREATED).send(response);
 }
