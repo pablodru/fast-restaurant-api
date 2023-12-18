@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
-import { preOrderSchema } from '@/schemas/orders-schema';
+import { PreOrderSchema } from '@/schemas/orders-schema';
 import ordersService from '@/services/orders-service';
 
 async function postOrder(req: Request, res: Response) {
-  const { additionalsIds, productIds, name, observation } = req.body as preOrderSchema;
+  const { additionalsIds, productIds, name, observation } = req.body as PreOrderSchema;
 
   const response = await ordersService.postOrder({name, observation}, productIds, additionalsIds);
 
@@ -12,7 +12,7 @@ async function postOrder(req: Request, res: Response) {
 }
 
 async function getOrderNotClosed(req: Request, res: Response) {
-  const { name } = res.locals;
+  const { name } = req.params;
 
   const response = await ordersService.getOrderNotClosed(name);
   res.status(httpStatus.OK).send(response);

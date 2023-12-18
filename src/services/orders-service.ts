@@ -11,7 +11,7 @@ export type TypeInfos = {
 async function postOrder(infos: TypeInfos, productIds: number[], additionalsIds?: number[]) {
   const existingProducts = await productsRepository.getProductsByIds(productIds);
   if (!existingProducts || existingProducts.length === 0) throw notFoundError('Products');
-  if (additionalsIds) {
+  if (additionalsIds.length>0) {
     const existingAdditionals = await additionalRepository.getAdditionalsByIds(additionalsIds);
     if (!existingAdditionals || existingAdditionals.length === 0) throw notFoundError('Additionals');
   }
@@ -23,7 +23,6 @@ async function postOrder(infos: TypeInfos, productIds: number[], additionalsIds?
 async function getOrderNotClosed(name: string) {
   const response = await ordersRepository.getOrderNotClosed(name);
   if (!response) throw notFoundError('Name');
-  
   return response;
 }
 

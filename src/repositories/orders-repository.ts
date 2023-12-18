@@ -29,7 +29,18 @@ async function createOrder(productIds: number[], additionalsIds: number[] = [], 
 async function getOrderNotClosed(name: string) {
   return await prisma.order.findMany({
     where: { customer: name, isClosed: false, isReady: false },
-    include: { products: true, orderAdditionals: true },
+    include: {
+      products: true,
+      orderAdditionals: {
+        include: {
+          additional: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      },
+    },
   });
 }
 
