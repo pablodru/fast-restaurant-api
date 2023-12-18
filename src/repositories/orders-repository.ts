@@ -70,6 +70,12 @@ async function cancelOrder(name: string) {
   })
 }
 
-const ordersRepository = { createOrder, getOrderNotClosed, cancelOrder, getOrdersByName, cancelOrderAdditionals };
+async function getCodeNumber() {
+  return await prisma.order.count({
+    where: {isClosed:true, isReady:false}
+  })
+}
+
+const ordersRepository = { createOrder, getOrderNotClosed, cancelOrder, getOrdersByName, cancelOrderAdditionals, getCodeNumber };
 
 export default ordersRepository;

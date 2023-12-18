@@ -38,6 +38,11 @@ async function calcelOrders(name:string) {
   return response;
 }
 
-const ordersService = { postOrder, getOrderNotClosed, calcelOrders };
+async function getCodeNumber() {
+  const codeNumber = await ordersRepository.getCodeNumber();
+  return codeNumber;
+}
+
+const ordersService = { postOrder, getOrderNotClosed, calcelOrders, getCodeNumber };
 
 export default ordersService;
