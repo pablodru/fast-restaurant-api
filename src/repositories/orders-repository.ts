@@ -1,6 +1,6 @@
-import { prisma } from "@/config";
+import { prisma } from '@/config';
 
-async function createOrder(productIds: number[], additionalsIds: number[] = [], name :string) {
+async function createOrder(productIds: number[], additionalsIds: number[] = [], name: string) {
   return await prisma.order.create({
     data: {
       customer: name,
@@ -24,6 +24,13 @@ async function createOrder(productIds: number[], additionalsIds: number[] = [], 
   });
 }
 
-const ordersRepository = { createOrder };
+async function getOrderNotClosed(name: string) {
+  return await prisma.order.findMany({
+    where: { customer: name, isClosed: false, isReady: false },
+    include: { products: true, orderAdditionals: true },
+  });
+}
+
+const ordersRepository = { createOrder, getOrderNotClosed };
 
 export default ordersRepository;
