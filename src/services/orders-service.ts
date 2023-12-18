@@ -26,6 +26,18 @@ async function getOrderNotClosed(name: string) {
   return response;
 }
 
-const ordersService = { postOrder, getOrderNotClosed };
+async function calcelOrders(name:string) {
+  const orders = await ordersRepository.getOrdersByName(name);
+  const orderAdditionalsIds = orders.flatMap(order =>
+    order.orderAdditionals.map(additional => additional.additionalId)
+  );
+  await ordersRepository.cancelOrderAdditionals(orderAdditionalsIds);
+
+  const response = await ordersRepository.cancelOrder(name);
+  if (!response) throw notFoundError('Name');
+  return response;
+}
+
+const ordersService = { postOrder, getOrderNotClosed, calcelOrders };
 
 export default ordersService;

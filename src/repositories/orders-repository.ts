@@ -44,6 +44,32 @@ async function getOrderNotClosed(name: string) {
   });
 }
 
-const ordersRepository = { createOrder, getOrderNotClosed };
+async function getOrdersByName(name: string) {
+  return await prisma.order.findMany({
+    where: {customer: name, isClosed: false, isReady: false},
+    include: {
+      products:true,
+      orderAdditionals: true
+    }
+  })
+}
+
+async function cancelOrderAdditionals(orderAdditionalsIds: number[]) {
+  return await prisma.orderAdditional.deleteMany({
+    where: {
+      additionalId: {
+        in: orderAdditionalsIds,
+      },
+    },
+  });
+}
+
+async function cancelOrder(name: string) {
+  return await prisma.order.deleteMany({
+    where: {customer: name, isClosed: false, isReady: false}
+  })
+}
+
+const ordersRepository = { createOrder, getOrderNotClosed, cancelOrder, getOrdersByName, cancelOrderAdditionals };
 
 export default ordersRepository;

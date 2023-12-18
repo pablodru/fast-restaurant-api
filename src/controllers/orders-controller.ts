@@ -15,9 +15,17 @@ async function getOrderNotClosed(req: Request, res: Response) {
   const { name } = req.params;
 
   const response = await ordersService.getOrderNotClosed(name);
-  res.status(httpStatus.OK).send(response);
+  return res.status(httpStatus.OK).send(response);
 }
 
-const orderController = { postOrder, getOrderNotClosed };
+async function cancelOrders(req: Request, res: Response) {
+  const { name } = req.params;
+
+  const response = await ordersService.calcelOrders(name);
+
+  return res.status(httpStatus.NO_CONTENT).send(response);
+}
+
+const orderController = { postOrder, getOrderNotClosed, cancelOrders };
 
 export default orderController;
