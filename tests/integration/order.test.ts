@@ -114,11 +114,29 @@ describe('GET /orders/closed', () => {
 })
 
 describe('POST /order/ready', () => {
+    it('should respond with 422 when body is invalid', async () => {
+        const response = await server.post(`/order/ready`).send({});
+        expect(response.statusCode).toBe(httpStatus.UNPROCESSABLE_ENTITY);
+    })
     it('should respond with 200', async () => {
         const product = await createProduct();
         const additional = await createAdditional();
         const order = await createOrderClosed([product.id],[additional.id])
         const response = await server.post(`/order/ready`).send({id: order.id});
         expect(response.statusCode).toBe(httpStatus.CREATED);
+    });
+})
+
+describe('DELETE /order/closed/:id', () => {
+    it('should respond with 422 when params is invalid', async () => {
+        const response = await server.delete(`/order/closed/${faker.person.firstName()}`);
+        expect(response.statusCode).toBe(httpStatus.UNPROCESSABLE_ENTITY);
+    });
+    it('should respond with 200', async () => {
+        const product = await createProduct();
+        const additional = await createAdditional();
+        const order = await createOrderClosed([product.id],[additional.id])
+        const response = await server.delete(`/order/closed/${order.id}`);
+        expect(response.statusCode).toBe(httpStatus.NO_CONTENT);
     });
 })
