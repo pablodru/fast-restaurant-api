@@ -4,6 +4,16 @@ async function getProducts() {
   return await prisma.product.findMany();
 }
 
-const productsRepository = { getProducts };
+async function getProductsByIds(ids: number[]) {
+  return await prisma.product.findMany({
+    where: {
+      id: {
+        in: ids,
+      },
+    },
+  });
+}
+
+const productsRepository = { getProducts, getProductsByIds };
 
 export default productsRepository;

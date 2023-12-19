@@ -4,6 +4,16 @@ async function getAdditionals() {
   return await prisma.additional.findMany();
 }
 
-const additionalRepository = { getAdditionals };
+async function getAdditionalsByIds(ids: number[]) {
+  return await prisma.additional.findMany({
+    where: {
+      id: {
+        in: ids,
+      },
+    },
+  });
+}
+
+const additionalRepository = { getAdditionals, getAdditionalsByIds };
 
 export default additionalRepository;
