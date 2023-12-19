@@ -68,7 +68,6 @@ describe('GET /order/checkout/:name', () => {
 describe('DELETE /order/cancel/:name', () => {
     it('should respond with 404 when Name is not found', async () => {
         const response = await server.delete(`/order/cancel/${faker.person.firstName()}`);
-        console.log(response)
         expect(response.statusCode).toBe(httpStatus.NOT_FOUND);
     });
     it('should respond with 204', async () => {
