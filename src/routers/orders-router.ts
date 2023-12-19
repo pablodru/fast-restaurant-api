@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import orderController from '@/controllers/orders-controller';
 import { validateBody, validateParams } from '@/middlewares/validateSchema';
-import { closeOrderSchema, nameSchema, preOrderSchema } from '@/schemas/orders-schema';
+import { closeOrderSchema, nameSchema, orderReadySchema, preOrderSchema } from '@/schemas/orders-schema';
 
 const ordersRouter = Router();
 
@@ -12,7 +12,7 @@ ordersRouter
   .get('/order/number', orderController.getCodeNumber)
   .put('/order', validateBody(closeOrderSchema), orderController.closeOrder)
   .get('/orders/closed', orderController.getOrders)
-  .post('/order/ready/:id') //validateSchema and kitchen
-  .delete('/order/:id'); //kitchen
+  .post('/order/ready', validateBody(orderReadySchema), orderController.orderReady)
+  .delete('/order/closed', validateBody(orderReadySchema), ); //kitchen
 
 export default ordersRouter;

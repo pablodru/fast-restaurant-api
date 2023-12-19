@@ -46,12 +46,12 @@ async function getOrderNotClosed(name: string) {
 
 async function getOrdersByName(name: string) {
   return await prisma.order.findMany({
-    where: {customer: name, isClosed: false, isReady: false},
+    where: { customer: name, isClosed: false, isReady: false },
     include: {
-      products:true,
-      orderAdditionals: true
-    }
-  })
+      products: true,
+      orderAdditionals: true,
+    },
+  });
 }
 
 async function cancelOrderAdditionals(orderAdditionalsIds: number[]) {
@@ -66,24 +66,24 @@ async function cancelOrderAdditionals(orderAdditionalsIds: number[]) {
 
 async function cancelOrder(name: string) {
   return await prisma.order.deleteMany({
-    where: {customer: name, isClosed: false, isReady: false}
-  })
+    where: { customer: name, isClosed: false, isReady: false },
+  });
 }
 
 async function getCodeNumber() {
   return await prisma.order.count({
-    where: {isClosed:true, isReady:false}
-  })
+    where: { isClosed: true, isReady: false },
+  });
 }
 
 async function closeOrder(oldName: string, newName: string) {
   return await prisma.order.updateMany({
-    where: {customer: oldName},
+    where: { customer: oldName },
     data: {
       customer: newName,
-      isClosed: true
-    }
-  })
+      isClosed: true,
+    },
+  });
 }
 
 async function getOrders() {
@@ -103,9 +103,33 @@ async function getOrders() {
         },
       },
     },
-  })
+  });
 }
 
-const ordersRepository = { createOrder, getOrderNotClosed, cancelOrder, getOrdersByName, cancelOrderAdditionals, getCodeNumber, closeOrder, getOrders };
+async function orderReady(id: number) {
+  return await prisma.order.update({
+    where: { id },
+    data: { isReady: true },
+  });
+}
+
+async function deleteOrderClosed(id: number) {
+  return await prisma.order.delete({
+    where: { id },
+  });
+}
+
+const ordersRepository = {
+  createOrder,
+  getOrderNotClosed,
+  cancelOrder,
+  getOrdersByName,
+  cancelOrderAdditionals,
+  getCodeNumber,
+  closeOrder,
+  getOrders,
+  orderReady,
+  deleteOrderClosed,
+};
 
 export default ordersRepository;

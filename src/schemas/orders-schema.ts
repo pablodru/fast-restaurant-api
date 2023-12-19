@@ -31,3 +31,11 @@ export type CloseOrderSchemaType = {
   oldName: string;
   newName: string;
 }
+
+export const orderReadySchema = Joi.object<OrderReadyType>({
+  id: Joi.number().required()
+})
+
+export type OrderReadyType = {
+  id: number
+}

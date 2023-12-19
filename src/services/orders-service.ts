@@ -4,14 +4,14 @@ import ordersRepository from '@/repositories/orders-repository';
 import productsRepository from '@/repositories/products-repository';
 
 export type TypeInfos = {
-  name: string,
-  observation?:string
-}
+  name: string;
+  observation?: string;
+};
 
 async function postOrder(infos: TypeInfos, productIds: number[], additionalsIds?: number[]) {
   const existingProducts = await productsRepository.getProductsByIds(productIds);
   if (!existingProducts || existingProducts.length === 0) throw notFoundError('Products');
-  if (additionalsIds.length>0) {
+  if (additionalsIds.length > 0) {
     const existingAdditionals = await additionalRepository.getAdditionalsByIds(additionalsIds);
     if (!existingAdditionals || existingAdditionals.length === 0) throw notFoundError('Additionals');
   }
@@ -26,10 +26,10 @@ async function getOrderNotClosed(name: string) {
   return response;
 }
 
-async function calcelOrders(name:string) {
+async function calcelOrders(name: string) {
   const orders = await ordersRepository.getOrdersByName(name);
-  const orderAdditionalsIds = orders.flatMap(order =>
-    order.orderAdditionals.map(additional => additional.additionalId)
+  const orderAdditionalsIds = orders.flatMap((order) =>
+    order.orderAdditionals.map((additional) => additional.additionalId),
   );
   await ordersRepository.cancelOrderAdditionals(orderAdditionalsIds);
 
@@ -54,6 +54,27 @@ async function getOrders() {
   return response;
 }
 
-const ordersService = { postOrder, getOrderNotClosed, calcelOrders, getCodeNumber, closeOrder, getOrders };
+async function orderReady(id: number) {
+  const response = await ordersRepository.orderReady(id);
+
+  return response;
+}
+
+async function deleteOrderClosed(id: number) {
+  const response = await ordersRepository.deleteOrderClosed(id);
+
+  return response;
+}
+
+const ordersService = {
+  postOrder,
+  getOrderNotClosed,
+  calcelOrders,
+  getCodeNumber,
+  closeOrder,
+  getOrders,
+  orderReady,
+  deleteOrderClosed,
+};
 
 export default ordersService;

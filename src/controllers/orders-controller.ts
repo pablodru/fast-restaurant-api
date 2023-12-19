@@ -6,7 +6,7 @@ import ordersService from '@/services/orders-service';
 async function postOrder(req: Request, res: Response) {
   const { additionalsIds, productIds, name, observation } = req.body as PreOrderSchema;
 
-  const response = await ordersService.postOrder({name, observation}, productIds, additionalsIds);
+  const response = await ordersService.postOrder({ name, observation }, productIds, additionalsIds);
 
   return res.status(httpStatus.CREATED).send(response);
 }
@@ -29,7 +29,7 @@ async function cancelOrders(req: Request, res: Response) {
 async function getCodeNumber(req: Request, res: Response) {
   const codeNumber = await ordersService.getCodeNumber();
 
-  return res.status(httpStatus.OK).send(codeNumber)
+  return res.status(httpStatus.OK).send(codeNumber);
 }
 
 async function closeOrder(req: Request, res: Response) {
@@ -41,11 +41,36 @@ async function closeOrder(req: Request, res: Response) {
 }
 
 async function getOrders(req: Request, res: Response) {
-  const response = ordersService.getOrders();
+  const response = await ordersService.getOrders();
 
   return res.status(httpStatus.OK).send(response);
 }
 
-const orderController = { postOrder, getOrderNotClosed, cancelOrders, getCodeNumber, closeOrder, getOrders };
+async function orderReady(req: Request, res: Response) {
+  const { id } = req.body;
+
+  const response = await ordersService.orderReady(id);
+
+  return res.status(httpStatus.CREATED).send(response);
+}
+
+async function deleteOrderClosed(req: Request, res: Response) {
+  const { id } = req.body;
+
+  const response = await ordersService.deleteOrderClosed(id);
+
+  return res.status(httpStatus.NO_CONTENT).send(response);
+}
+
+const orderController = {
+  postOrder,
+  getOrderNotClosed,
+  cancelOrders,
+  getCodeNumber,
+  closeOrder,
+  getOrders,
+  orderReady,
+  deleteOrderClosed,
+};
 
 export default orderController;
