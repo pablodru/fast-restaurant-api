@@ -112,3 +112,13 @@ describe('GET /orders/closed', () => {
         expect(response.statusCode).toBe(httpStatus.OK);
     });
 })
+
+describe('POST /order/ready', () => {
+    it('should respond with 200', async () => {
+        const product = await createProduct();
+        const additional = await createAdditional();
+        const order = await createOrderClosed([product.id],[additional.id])
+        const response = await server.post(`/order/ready`).send({id: order.id});
+        expect(response.statusCode).toBe(httpStatus.CREATED);
+    });
+})
