@@ -5,8 +5,7 @@ import productsRepository from '@/repositories/products-repository';
 async function getProducts() {
   const products = await productsRepository.getProducts();
   const additionals = await additionalRepository.getAdditionals();
-
-  if (!products) throw notFoundError('Products');
+  if (products.length===0) throw notFoundError('Products');
 
   const productsWithAdditionals = { products, additionals };
   return productsWithAdditionals;
