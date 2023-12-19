@@ -29,7 +29,7 @@ async function cancelOrders(req: Request, res: Response) {
 async function getCodeNumber(req: Request, res: Response) {
   const codeNumber = await ordersService.getCodeNumber();
 
-  res.status(httpStatus.OK).send(codeNumber)
+  return res.status(httpStatus.OK).send(codeNumber)
 }
 
 async function closeOrder(req: Request, res: Response) {
@@ -40,6 +40,12 @@ async function closeOrder(req: Request, res: Response) {
   return res.status(httpStatus.OK).send(response);
 }
 
-const orderController = { postOrder, getOrderNotClosed, cancelOrders, getCodeNumber, closeOrder };
+async function getOrders(req: Request, res: Response) {
+  const response = ordersService.getOrders();
+
+  return res.status(httpStatus.OK).send(response);
+}
+
+const orderController = { postOrder, getOrderNotClosed, cancelOrders, getCodeNumber, closeOrder, getOrders };
 
 export default orderController;

@@ -86,6 +86,26 @@ async function closeOrder(oldName: string, newName: string) {
   })
 }
 
-const ordersRepository = { createOrder, getOrderNotClosed, cancelOrder, getOrdersByName, cancelOrderAdditionals, getCodeNumber, closeOrder };
+async function getOrders() {
+  return await prisma.order.findMany({
+    where: { isClosed: true },
+    include: {
+      products: true,
+      orderAdditionals: {
+        include: {
+          additional: {
+            select: {
+              name: true,
+              image: true,
+              price: true,
+            },
+          },
+        },
+      },
+    },
+  })
+}
+
+const ordersRepository = { createOrder, getOrderNotClosed, cancelOrder, getOrdersByName, cancelOrderAdditionals, getCodeNumber, closeOrder, getOrders };
 
 export default ordersRepository;

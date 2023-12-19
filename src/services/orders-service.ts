@@ -48,6 +48,12 @@ async function closeOrder(oldName: string, newName: string) {
   return response;
 }
 
-const ordersService = { postOrder, getOrderNotClosed, calcelOrders, getCodeNumber, closeOrder };
+async function getOrders() {
+  const response = await ordersRepository.getOrders();
+
+  return response;
+}
+
+const ordersService = { postOrder, getOrderNotClosed, calcelOrders, getCodeNumber, closeOrder, getOrders };
 
 export default ordersService;

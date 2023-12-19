@@ -10,8 +10,8 @@ ordersRouter
   .get('/order/checkout/:name', validateParams(nameSchema), orderController.getOrderNotClosed)
   .delete('/order/cancel/:name', validateParams(nameSchema), orderController.cancelOrders)
   .get('/order/number', orderController.getCodeNumber)
-  .put('/order', validateBody(closeOrderSchema), orderController.closeOrder) //validateSchema
-  .get('/orders') // kitchen and customers
+  .put('/order', validateBody(closeOrderSchema), orderController.closeOrder)
+  .get('/orders/closed', orderController.getOrders)
   .post('/order/ready/:id') //validateSchema and kitchen
   .delete('/order/:id'); //kitchen
 
