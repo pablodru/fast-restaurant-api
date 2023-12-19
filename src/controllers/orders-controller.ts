@@ -6,9 +6,9 @@ import ordersService from '@/services/orders-service';
 async function postOrder(req: Request, res: Response) {
   const { additionalsIds, productIds, name, observation } = req.body as PreOrderSchema;
 
-  const response = await ordersService.postOrder({ name, observation }, productIds, additionalsIds);
+  await ordersService.postOrder({ name, observation }, productIds, additionalsIds);
 
-  return res.sendStatus(httpStatus.CREATED)
+  return res.sendStatus(httpStatus.CREATED);
 }
 
 async function getOrderNotClosed(req: Request, res: Response) {
@@ -23,13 +23,13 @@ async function cancelOrders(req: Request, res: Response) {
 
   await ordersService.calcelOrders(name);
 
-  return res.sendStatus(httpStatus.NO_CONTENT)
+  return res.sendStatus(httpStatus.NO_CONTENT);
 }
 
-async function getCodeNumber(req: Request, res: Response) {
+async function getCodeNumber(_req: Request, res: Response) {
   const codeNumber = await ordersService.getCodeNumber();
 
-  return res.status(httpStatus.OK).send({codeNumber});
+  return res.status(httpStatus.OK).send({ codeNumber });
 }
 
 async function closeOrder(req: Request, res: Response) {
@@ -40,7 +40,7 @@ async function closeOrder(req: Request, res: Response) {
   return res.status(httpStatus.OK).send(response);
 }
 
-async function getOrders(req: Request, res: Response) {
+async function getOrders(_req: Request, res: Response) {
   const response = await ordersService.getOrders();
 
   return res.status(httpStatus.OK).send(response);
@@ -49,7 +49,7 @@ async function getOrders(req: Request, res: Response) {
 async function orderReady(req: Request, res: Response) {
   const { id } = req.body;
 
-  const response = await ordersService.orderReady(id);
+  await ordersService.orderReady(id);
 
   return res.sendStatus(httpStatus.CREATED);
 }
@@ -57,7 +57,7 @@ async function orderReady(req: Request, res: Response) {
 async function deleteOrderClosed(req: Request, res: Response) {
   const { id } = req.params;
 
-  const response = await ordersService.deleteOrderClosed(Number(id));
+  await ordersService.deleteOrderClosed(Number(id));
 
   return res.sendStatus(httpStatus.NO_CONTENT);
 }
