@@ -17,11 +17,11 @@ beforeEach(async () => {
 });
 
 describe('GET /products', () => {
-    it('shold respond with 404 when have no products', async () => {
+    it('should respond with 404 when have no products', async () => {
         const response = await server.get('/products');
         expect(response.statusCode).toBe(httpStatus.NOT_FOUND);
     })
-    it('shold respond with 200', async () => {
+    it('should respond with 200', async () => {
         await createProduct();
         await createAdditional();
         const response = await server.get('/products');
