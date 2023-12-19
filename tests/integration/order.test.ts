@@ -78,3 +78,17 @@ describe('DELETE /order/cancel/:name', () => {
         expect(response.statusCode).toBe(httpStatus.NO_CONTENT);
     });
 })
+
+describe('PUT /order', () => {
+    it('should respond with 422 when body is invalir', async () => {
+        const response = await server.put(`/order`).send({});
+        expect(response.statusCode).toBe(httpStatus.UNPROCESSABLE_ENTITY);
+    });
+    it('should respond with 200', async () => {
+        const product = await createProduct();
+        const additional = await createAdditional();
+        const order = await createOrder([product.id],[additional.id])
+        const response = await server.put(`/order`).send({oldName:order.customer, newName:faker.person.lastName()});
+        expect(response.statusCode).toBe(httpStatus.OK);
+    });
+})
