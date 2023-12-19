@@ -50,8 +50,21 @@ async function closeOrder(oldName: string, newName: string) {
 
 async function getOrders() {
   const response = await ordersRepository.getOrders();
+  const ordersWithUpdatedProducts = response.map((order, i) => {
+    const updatedProducts = order.products.map((product) => {
+      return {
+        ...product,
+        codeNumber: i+1,
+      };
+    });
 
-  return response;
+    return {
+      ...order,
+      products: updatedProducts,
+    };
+  });
+
+  return ordersWithUpdatedProducts;
 }
 
 async function orderReady(id: number) {

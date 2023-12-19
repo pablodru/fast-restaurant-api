@@ -8,7 +8,7 @@ async function postOrder(req: Request, res: Response) {
 
   const response = await ordersService.postOrder({ name, observation }, productIds, additionalsIds);
 
-  return res.status(httpStatus.CREATED).send(response);
+  return res.sendStatus(httpStatus.CREATED)
 }
 
 async function getOrderNotClosed(req: Request, res: Response) {
@@ -21,15 +21,15 @@ async function getOrderNotClosed(req: Request, res: Response) {
 async function cancelOrders(req: Request, res: Response) {
   const { name } = req.params;
 
-  const response = await ordersService.calcelOrders(name);
+  await ordersService.calcelOrders(name);
 
-  return res.status(httpStatus.NO_CONTENT).send(response);
+  return res.sendStatus(httpStatus.NO_CONTENT)
 }
 
 async function getCodeNumber(req: Request, res: Response) {
   const codeNumber = await ordersService.getCodeNumber();
 
-  return res.status(httpStatus.OK).send(codeNumber);
+  return res.status(httpStatus.OK).send({codeNumber});
 }
 
 async function closeOrder(req: Request, res: Response) {
@@ -51,15 +51,15 @@ async function orderReady(req: Request, res: Response) {
 
   const response = await ordersService.orderReady(id);
 
-  return res.status(httpStatus.CREATED).send(response);
+  return res.sendStatus(httpStatus.CREATED);
 }
 
 async function deleteOrderClosed(req: Request, res: Response) {
-  const { id } = req.body;
+  const { id } = req.params;
 
-  const response = await ordersService.deleteOrderClosed(id);
+  const response = await ordersService.deleteOrderClosed(Number(id));
 
-  return res.status(httpStatus.NO_CONTENT).send(response);
+  return res.sendStatus(httpStatus.NO_CONTENT);
 }
 
 const orderController = {

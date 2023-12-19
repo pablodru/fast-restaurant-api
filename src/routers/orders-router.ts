@@ -13,6 +13,6 @@ ordersRouter
   .put('/order', validateBody(closeOrderSchema), orderController.closeOrder)
   .get('/orders/closed', orderController.getOrders)
   .post('/order/ready', validateBody(orderReadySchema), orderController.orderReady)
-  .delete('/order/closed', validateBody(orderReadySchema), ); //kitchen
+  .delete('/order/closed/:id', validateParams(orderReadySchema), orderController.deleteOrderClosed);
 
 export default ordersRouter;
