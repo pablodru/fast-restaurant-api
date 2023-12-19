@@ -22,7 +22,7 @@ async function postOrder(infos: TypeInfos, productIds: number[], additionalsIds?
 
 async function getOrderNotClosed(name: string) {
   const response = await ordersRepository.getOrderNotClosed(name);
-  if (!response) throw notFoundError('Name');
+  if (response.length===0) throw notFoundError('Name');
   return response;
 }
 
