@@ -113,6 +113,23 @@ async function orderReady(id: number) {
   });
 }
 
+async function getOrderById(id: number) {
+  return await prisma.order.findUnique({
+    where: {id},
+    include: {orderAdditionals: true}
+  })
+}
+
+async function deleteOrderAdditionalsById(id: number[]) {
+  return await prisma.orderAdditional.deleteMany({
+    where: {
+      id: {
+        in: id,
+      }
+    }
+  })
+}
+
 async function deleteOrderClosed(id: number) {
   return await prisma.order.delete({
     where: { id },
@@ -129,6 +146,8 @@ const ordersRepository = {
   closeOrder,
   getOrders,
   orderReady,
+  getOrderById,
+  deleteOrderAdditionalsById,
   deleteOrderClosed,
 };
 
