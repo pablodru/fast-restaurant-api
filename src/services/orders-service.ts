@@ -54,7 +54,7 @@ async function getOrders() {
     const updatedProducts = order.products.map((product) => {
       return {
         ...product,
-        codeNumber: i+1,
+        codeNumber: i + 1,
       };
     });
 
