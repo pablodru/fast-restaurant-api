@@ -102,3 +102,13 @@ describe('GET /order/number', () => {
         expect(response.statusCode).toBe(httpStatus.OK);
     });
 })
+
+describe('GET /orders/closed', () => {
+    it('should respond with 200', async () => {
+        const product = await createProduct();
+        const additional = await createAdditional();
+        await createOrderClosed([product.id],[additional.id])
+        const response = await server.get(`/orders/closed`);
+        expect(response.statusCode).toBe(httpStatus.OK);
+    });
+})
