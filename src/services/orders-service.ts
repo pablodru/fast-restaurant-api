@@ -28,6 +28,7 @@ async function getOrderNotClosed(name: string) {
 
 async function calcelOrders(name: string) {
   const orders = await ordersRepository.getOrdersByName(name);
+  if(!orders.length) throw notFoundError("Name")
   const orderAdditionalsIds = orders.flatMap((order) =>
     order.orderAdditionals.map((additional) => additional.additionalId),
   );
