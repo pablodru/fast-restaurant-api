@@ -73,7 +73,14 @@ async function orderReady(id: number) {
   return response;
 }
 
+
 async function deleteOrderClosed(id: number) {
+  const order = await ordersRepository.getOrderById(id);
+
+  const orderAdditionalsIds = order.orderAdditionals.map(additional => additional.id);
+
+  await ordersRepository.deleteOrderAdditionalsById(orderAdditionalsIds);
+
   const response = await ordersRepository.deleteOrderClosed(id);
 
   return response;
