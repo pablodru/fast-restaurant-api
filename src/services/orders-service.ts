@@ -22,12 +22,13 @@ async function postOrder(infos: TypeInfos, productIds: number[], additionalsIds?
 
 async function getOrderNotClosed(name: string) {
   const response = await ordersRepository.getOrderNotClosed(name);
-  if (!response) throw notFoundError('Name');
+  if (response.length===0) throw notFoundError('Name');
   return response;
 }
 
 async function calcelOrders(name: string) {
   const orders = await ordersRepository.getOrdersByName(name);
+  if(!orders.length) throw notFoundError("Name")
   const orderAdditionalsIds = orders.flatMap((order) =>
     order.orderAdditionals.map((additional) => additional.additionalId),
   );
