@@ -4,7 +4,7 @@ import supertest from 'supertest';
 import { createAdditional, createProduct } from '../factories/products-factory';
 import { cleanDb } from '../helpers';
 import { faker } from '@faker-js/faker';
-import { createOrder } from '../factories/order-factory';
+import { createOrder, createOrderClosed } from '../factories/order-factory';
 
 const server = supertest(app);
 
@@ -89,6 +89,16 @@ describe('PUT /order', () => {
         const additional = await createAdditional();
         const order = await createOrder([product.id],[additional.id])
         const response = await server.put(`/order`).send({oldName:order.customer, newName:faker.person.lastName()});
+        expect(response.statusCode).toBe(httpStatus.OK);
+    });
+})
+
+describe('GET /order/number', () => {
+    it('should respond with 200', async () => {
+        const product = await createProduct();
+        const additional = await createAdditional();
+        await createOrderClosed([product.id],[additional.id])
+        const response = await server.get(`/order/number`);
         expect(response.statusCode).toBe(httpStatus.OK);
     });
 })
