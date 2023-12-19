@@ -14,10 +14,20 @@ export type PreOrderSchema = {
   observation?: string;
 };
 
-export const nameSchema = Joi.object({
-  name: Joi.string().required(),
+export const nameSchema = Joi.object<NameSchema>({
+  name: Joi.string().trim().required(),
 })
 
 export type NameSchema = {
   name: string
+}
+
+export const closeOrderSchema = Joi.object<CloseOrderSchemaType>({
+  oldName: Joi.string().trim().required(),
+  newName: Joi.string().trim().required(),
+})
+
+export type CloseOrderSchemaType = {
+  oldName: string;
+  newName: string;
 }

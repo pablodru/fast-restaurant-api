@@ -76,6 +76,16 @@ async function getCodeNumber() {
   })
 }
 
-const ordersRepository = { createOrder, getOrderNotClosed, cancelOrder, getOrdersByName, cancelOrderAdditionals, getCodeNumber };
+async function closeOrder(oldName: string, newName: string) {
+  return await prisma.order.updateMany({
+    where: {customer: oldName},
+    data: {
+      customer: newName,
+      isClosed: true
+    }
+  })
+}
+
+const ordersRepository = { createOrder, getOrderNotClosed, cancelOrder, getOrdersByName, cancelOrderAdditionals, getCodeNumber, closeOrder };
 
 export default ordersRepository;

@@ -32,6 +32,14 @@ async function getCodeNumber(req: Request, res: Response) {
   res.status(httpStatus.OK).send(codeNumber)
 }
 
-const orderController = { postOrder, getOrderNotClosed, cancelOrders, getCodeNumber };
+async function closeOrder(req: Request, res: Response) {
+  const { oldName, newName } = req.body;
+
+  const response = await ordersService.closeOrder(oldName, newName);
+
+  return res.status(httpStatus.OK).send(response);
+}
+
+const orderController = { postOrder, getOrderNotClosed, cancelOrders, getCodeNumber, closeOrder };
 
 export default orderController;
