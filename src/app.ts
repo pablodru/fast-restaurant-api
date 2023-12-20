@@ -3,6 +3,7 @@ import express, { Express } from 'express';
 import cors from 'cors';
 import router from './routers/index-router';
 import { loadEnv, connectDb, disconnectDB } from '@/config';
+import { handleApplicationErrors } from '@/middlewares/error-handler';
 
 loadEnv();
 
@@ -11,7 +12,8 @@ app
   .use(cors())
   .use(express.json())
   .get('/health', (_req, res) => res.send('OK!'))
-  .use(router);
+  .use(router)
+  .use(handleApplicationErrors);
 
 export function init(): Promise<Express> {
   connectDb();
