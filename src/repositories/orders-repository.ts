@@ -115,9 +115,9 @@ async function orderReady(id: number) {
 
 async function getOrderById(id: number) {
   return await prisma.order.findUnique({
-    where: {id},
-    include: {orderAdditionals: true}
-  })
+    where: { id },
+    include: { orderAdditionals: true },
+  });
 }
 
 async function deleteOrderAdditionalsById(id: number[]) {
@@ -125,9 +125,9 @@ async function deleteOrderAdditionalsById(id: number[]) {
     where: {
       id: {
         in: id,
-      }
-    }
-  })
+      },
+    },
+  });
 }
 
 async function deleteOrderClosed(id: number) {
